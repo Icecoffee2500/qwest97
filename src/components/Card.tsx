@@ -129,7 +129,7 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
             </div>
 
             {item.tags && item.tags.length > 0 && (
-              <div className="flex justify-end">
+              <div className="flex justify-start">
                 <span
                   className={`text-neutral-400 tracking-[0.1em] font-medium ${
                     enlarged ? "text-[11px]" : "text-[9px]"
