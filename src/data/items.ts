@@ -26,6 +26,7 @@ export const categories: { key: Category; label: string }[] = [
 ];
 
 export const publications = [
+  "IEEE Internet of Things Journal",
   "CVPR",
   "ICCV",
   "ECCV",
