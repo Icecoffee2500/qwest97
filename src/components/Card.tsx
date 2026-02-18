@@ -3,6 +3,28 @@
 import { motion } from "framer-motion";
 import type { Item } from "@/data/items";
 
+const DOMAIN_COLORS = [
+  "#FF3B30",
+  "#FF9500",
+  "#FFCC00",
+  "#34C759",
+  "#00C7BE",
+  "#30B0C7",
+  "#32ADE6",
+  "#007AFF",
+  "#5856D6",
+  "#AF52DE",
+  "#A2845E",
+];
+
+function getDomainColor(domain: string): string {
+  let hash = 0;
+  for (let i = 0; i < domain.length; i++) {
+    hash = domain.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return DOMAIN_COLORS[Math.abs(hash) % DOMAIN_COLORS.length];
+}
+
 interface CardProps {
   item: Item;
   enlarged: boolean;
@@ -52,15 +74,16 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
               </span>
               {domain && (
                 <span
-                  className={`text-neutral-300 tracking-[0.1em] uppercase font-light truncate mx-3 ${
+                  className={`tracking-[0.1em] uppercase font-medium truncate mx-3 ${
                     enlarged ? "text-[11px]" : "text-[9px]"
                   }`}
+                  style={{ color: getDomainColor(domain) }}
                 >
                   {domain}
                 </span>
               )}
               <span
-                className={`text-neutral-300 tracking-[0.2em] font-light ${
+                className={`text-neutral-400 tracking-[0.2em] font-medium ${
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
               >

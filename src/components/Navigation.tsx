@@ -56,7 +56,7 @@ export default function Navigation({
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-30 bg-white/80 backdrop-blur-md border-b border-neutral-100">
+    <nav className="fixed top-0 left-0 right-0 z-30 bg-white/80 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-6 grid grid-cols-[auto_1fr_auto] items-center h-14 gap-4">
         {/* Left */}
         <div className="flex items-center justify-start">
