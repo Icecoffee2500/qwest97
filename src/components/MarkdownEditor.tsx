@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useTransition } from "react";
+import { useState, useRef, useTransition, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { uploadImageAction } from "@/app/admin/actions";
 
@@ -8,6 +8,58 @@ const MarkdownRenderer = dynamic(() => import("./MarkdownRenderer"), {
   ssr: false,
   loading: () => <div className="animate-pulse h-20 bg-neutral-50" />,
 });
+
+const MAX_SIZE_MB = 3;
+const MAX_WIDTH = 1600;
+const QUALITY = 0.85;
+
+function compressImage(file: File): Promise<File> {
+  return new Promise((resolve, reject) => {
+    if (file.size <= MAX_SIZE_MB * 1024 * 1024) {
+      resolve(file);
+      return;
+    }
+
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+
+      let { width, height } = img;
+      if (width > MAX_WIDTH) {
+        height = Math.round((height * MAX_WIDTH) / width);
+        width = MAX_WIDTH;
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return reject(new Error("Canvas not supported"));
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) return reject(new Error("Compression failed"));
+          const compressed = new File([blob], file.name || "image.jpg", {
+            type: "image/jpeg",
+          });
+          resolve(compressed);
+        },
+        "image/jpeg",
+        QUALITY
+      );
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("이미지를 읽을 수 없습니다"));
+    };
+
+    img.src = url;
+  });
+}
 
 interface MarkdownEditorProps {
   name: string;
@@ -35,7 +87,11 @@ export default function MarkdownEditor({
     const selected = value.substring(start, end);
     const placeholder = selected || "";
     const newValue =
-      value.substring(0, start) + before + placeholder + after + value.substring(end);
+      value.substring(0, start) +
+      before +
+      placeholder +
+      after +
+      value.substring(end);
     setValue(newValue);
 
     requestAnimationFrame(() => {
@@ -50,32 +106,41 @@ export default function MarkdownEditor({
     });
   }
 
-  function uploadFile(file: File) {
-    if (!file.type.startsWith("image/")) return;
+  const uploadFile = useCallback(
+    (file: File) => {
+      if (!file.type.startsWith("image/")) return;
 
-    setUploadError("");
-    setUploading(true);
-    const fd = new FormData();
-    fd.set("file", file);
+      setUploadError("");
+      setUploading(true);
 
-    startTransition(async () => {
-      try {
-        const result = await uploadImageAction(fd);
-        setUploading(false);
-        if (result.success && result.url) {
-          const textarea = textareaRef.current;
-          const pos = textarea ? textarea.selectionStart : value.length;
-          const img = `\n![${file.name}](${result.url})\n`;
-          setValue((v) => v.substring(0, pos) + img + v.substring(pos));
-        } else {
-          setUploadError(result.error || "업로드에 실패했습니다");
+      startTransition(async () => {
+        try {
+          const compressed = await compressImage(file);
+
+          const fd = new FormData();
+          fd.set("file", compressed);
+
+          const result = await uploadImageAction(fd);
+          setUploading(false);
+
+          if (result.success && result.url) {
+            const textarea = textareaRef.current;
+            const pos = textarea ? textarea.selectionStart : value.length;
+            const img = `\n![${file.name || "image"}](${result.url})\n`;
+            setValue((v) => v.substring(0, pos) + img + v.substring(pos));
+          } else {
+            setUploadError(result.error || "업로드에 실패했습니다");
+          }
+        } catch (err) {
+          setUploading(false);
+          setUploadError(
+            err instanceof Error ? err.message : "업로드 중 오류가 발생했습니다"
+          );
         }
-      } catch {
-        setUploading(false);
-        setUploadError("업로드 중 오류가 발생했습니다");
-      }
-    });
-  }
+      });
+    },
+    [value, startTransition]
+  );
 
   function handleImageUpload() {
     const input = document.createElement("input");
@@ -110,10 +175,22 @@ export default function MarkdownEditor({
   const tools = [
     { label: "B", action: () => insertAtCursor("**", "**"), title: "Bold" },
     { label: "I", action: () => insertAtCursor("*", "*"), title: "Italic" },
-    { label: "H", action: () => insertAtCursor("\n## ", "\n"), title: "Heading" },
+    {
+      label: "H",
+      action: () => insertAtCursor("\n## ", "\n"),
+      title: "Heading",
+    },
     { label: "—", action: () => insertAtCursor("\n---\n"), title: "구분선" },
-    { label: "$", action: () => insertAtCursor("$", "$"), title: "Inline LaTeX" },
-    { label: "$$", action: () => insertAtCursor("\n$$\n", "\n$$\n"), title: "Block LaTeX" },
+    {
+      label: "$",
+      action: () => insertAtCursor("$", "$"),
+      title: "Inline LaTeX",
+    },
+    {
+      label: "$$",
+      action: () => insertAtCursor("\n$$\n", "\n$$\n"),
+      title: "Block LaTeX",
+    },
     { label: "IMG", action: handleImageUpload, title: "이미지 업로드" },
   ];
 
@@ -138,13 +215,11 @@ export default function MarkdownEditor({
 
         {uploading && (
           <span className="text-[10px] text-neutral-400 animate-pulse ml-2">
-            업로드 중...
+            압축 및 업로드 중...
           </span>
         )}
         {uploadError && (
-          <span className="text-[10px] text-red-500 ml-2">
-            {uploadError}
-          </span>
+          <span className="text-[10px] text-red-500 ml-2">{uploadError}</span>
         )}
 
         <div className="flex-1" />
@@ -183,7 +258,10 @@ export default function MarkdownEditor({
             value={value}
             onChange={(e) => setValue(e.target.value)}
             onDrop={handleDrop}
-            onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragging(true);
+            }}
             onDragLeave={() => setDragging(false)}
             onPaste={handlePaste}
             rows={16}
