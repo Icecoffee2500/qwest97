@@ -20,7 +20,7 @@ interface NavigationProps {
 
 const transition = { duration: 0.2 };
 const btnBase =
-  "relative text-[9px] sm:text-xs tracking-[0.08em] sm:tracking-[0.15em] uppercase px-0.5 sm:px-1 py-1 transition-colors duration-200 whitespace-nowrap";
+  "relative text-[11px] sm:text-xs tracking-[0.08em] sm:tracking-[0.15em] uppercase px-1.5 sm:px-1 py-2 sm:py-1 transition-colors duration-200 whitespace-nowrap";
 
 function Indicator() {
   return (
@@ -57,13 +57,13 @@ export default function Navigation({
 
   return (
     <nav className="fixed bottom-0 sm:top-0 sm:bottom-auto left-0 right-0 z-30 bg-white pb-[env(safe-area-inset-bottom)]">
-      <div className="mx-auto max-w-7xl px-3 sm:px-6 grid grid-cols-[auto_1fr_auto] items-center h-12 sm:h-14 gap-2 sm:gap-4">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 grid grid-cols-[auto_1fr_auto] items-center h-14 sm:h-14 gap-3 sm:gap-4">
         {/* Left */}
         <div className="flex items-center justify-start">
           {isPaperReview ? (
             <button
               onClick={handleBack}
-              className="text-neutral-400 hover:text-black transition-colors duration-200 text-sm leading-none"
+              className="text-neutral-400 hover:text-black transition-colors duration-200 text-base sm:text-sm leading-none p-1"
               aria-label="뒤로"
             >
               ←
@@ -71,7 +71,7 @@ export default function Navigation({
           ) : (
             <button
               onClick={onToggleSize}
-              className="text-neutral-400 hover:text-black transition-colors duration-200 text-lg leading-none"
+              className="text-neutral-400 hover:text-black transition-colors duration-200 text-xl sm:text-lg leading-none p-1"
               aria-label={enlarged ? "카드 축소" : "카드 확대"}
             >
               {enlarged ? "−" : "+"}
@@ -223,7 +223,7 @@ export default function Navigation({
         <div className="flex items-center justify-end">
           <a
             href="/"
-            className="text-[10px] sm:text-xs font-medium tracking-[0.12em] sm:tracking-[0.25em] uppercase text-black"
+            className="text-[11px] sm:text-xs font-medium tracking-[0.12em] sm:tracking-[0.25em] uppercase text-black p-1"
           >
             <span className="hidden sm:inline">Taeheon Lim</span>
             <span className="sm:hidden">TH</span>
