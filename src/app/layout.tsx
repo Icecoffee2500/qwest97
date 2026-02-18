@@ -8,7 +8,7 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Your Name — Researcher",
+  title: "Taeheon Lim",
   description: "Ph.D. Student | Research Portfolio",
 };
 
