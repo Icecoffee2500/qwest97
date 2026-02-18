@@ -56,7 +56,7 @@ export default function Navigation({
   }
 
   return (
-    <nav className="fixed bottom-0 sm:top-0 sm:bottom-auto left-0 right-0 z-30 bg-white border-t border-neutral-100 sm:border-t-0 pb-[env(safe-area-inset-bottom)]">
+    <nav className="fixed bottom-0 sm:top-0 sm:bottom-auto left-0 right-0 z-30 bg-white pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto max-w-7xl px-3 sm:px-6 grid grid-cols-[auto_1fr_auto] items-center h-12 sm:h-14 gap-2 sm:gap-4">
         {/* Left */}
         <div className="flex items-center justify-start">

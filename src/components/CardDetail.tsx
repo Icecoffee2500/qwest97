@@ -45,9 +45,22 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.3 }}
       >
-        {/* Top bar */}
-        <div className="sticky top-0 z-10 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 h-14 flex items-center">
+        {/* Top bar — desktop only */}
+        <div className="hidden sm:block sticky top-0 z-10 bg-white">
+          <div className="mx-auto max-w-7xl px-6 h-14 flex items-center">
+            <button
+              onClick={onClose}
+              className="text-neutral-400 hover:text-black transition-colors duration-200 text-lg leading-none"
+              aria-label="닫기"
+            >
+              ←
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom bar — mobile only */}
+        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-10 bg-white pb-[env(safe-area-inset-bottom)]">
+          <div className="mx-auto max-w-7xl px-4 h-12 flex items-center">
             <button
               onClick={onClose}
               className="text-neutral-400 hover:text-black transition-colors duration-200 text-lg leading-none"
@@ -59,7 +72,7 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
         </div>
 
         {/* Content */}
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-10 sm:pt-16 pb-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-6 sm:pt-16 pb-20 sm:pb-24">
           {/* Header */}
           <div>
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
