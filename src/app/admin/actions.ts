@@ -57,6 +57,10 @@ export async function createItemAction(formData: FormData) {
     links,
     year: yearRaw ? parseInt(yearRaw) : null,
     publication: (formData.get("publication") as string) || null,
+    collaborator: (formData.get("collaborator") as string) || null,
+    thumbnail: (formData.get("thumbnail") as string) || null,
+    period_start: (formData.get("period_start") as string) || null,
+    period_end: (formData.get("period_end") as string) || null,
   });
 
   if (error) {
@@ -92,6 +96,10 @@ export async function updateItemAction(id: string, formData: FormData) {
       links,
       year: yearRaw ? parseInt(yearRaw) : null,
       publication: (formData.get("publication") as string) || null,
+      collaborator: (formData.get("collaborator") as string) || null,
+      thumbnail: (formData.get("thumbnail") as string) || null,
+      period_start: (formData.get("period_start") as string) || null,
+      period_end: (formData.get("period_end") as string) || null,
     })
     .eq("id", id);
 

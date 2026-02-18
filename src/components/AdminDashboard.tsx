@@ -220,11 +220,30 @@ function ItemForm({
   const [selectedCategory, setSelectedCategory] = useState<string>(
     item?.category || "research"
   );
+  const [thumbnailUrl, setThumbnailUrl] = useState(item?.thumbnail || "");
+  const [thumbnailUploading, setThumbnailUploading] = useState(false);
+
+  async function handleThumbnailUpload(file: File) {
+    if (!file.type.startsWith("image/")) return;
+    setThumbnailUploading(true);
+    try {
+      const fd = new FormData();
+      fd.set("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const result = await res.json();
+      if (result.success && result.url) {
+        setThumbnailUrl(result.url);
+      }
+    } finally {
+      setThumbnailUploading(false);
+    }
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     formData.set("links", JSON.stringify(links));
+    formData.set("thumbnail", thumbnailUrl);
     onSubmit(formData);
   }
 
@@ -287,6 +306,80 @@ function ItemForm({
             ))}
           </select>
         </div>
+      )}
+
+      {selectedCategory === "project" && (
+        <>
+          <div>
+            <label className={labelClass}>협력기관</label>
+            <input
+              name="collaborator"
+              defaultValue={item?.collaborator || ""}
+              className={inputClass}
+              placeholder="예: 삼성전자, KAIST, Google 등"
+            />
+          </div>
+
+          <div>
+            <label className={labelClass}>썸네일 (협력기관 로고 등)</label>
+            <div className="flex items-center gap-4">
+              {thumbnailUrl && (
+                <div className="relative w-16 h-16 rounded-lg border border-neutral-200 overflow-hidden flex-shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={thumbnailUrl}
+                    alt="thumbnail"
+                    className="w-full h-full object-contain"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setThumbnailUrl("")}
+                    className="absolute top-0 right-0 w-4 h-4 bg-black/60 text-white text-[8px] flex items-center justify-center"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
+              <label className="cursor-pointer text-[10px] tracking-wider uppercase text-neutral-400 hover:text-black transition-colors py-2">
+                {thumbnailUploading ? (
+                  <span className="animate-pulse">업로드 중...</span>
+                ) : (
+                  "+ Upload"
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleThumbnailUpload(file);
+                  }}
+                />
+              </label>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelClass}>참여 시작</label>
+              <input
+                name="period_start"
+                type="month"
+                defaultValue={item?.period_start || ""}
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className={labelClass}>참여 종료</label>
+              <input
+                name="period_end"
+                type="month"
+                defaultValue={item?.period_end || ""}
+                className={inputClass}
+              />
+            </div>
+          </div>
+        </>
       )}
 
       <div>

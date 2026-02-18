@@ -10,6 +10,10 @@ export interface Item {
   links?: { label: string; url: string }[] | null;
   year?: number | null;
   publication?: string | null;
+  collaborator?: string | null;
+  thumbnail?: string | null;
+  period_start?: string | null;
+  period_end?: string | null;
 }
 
 export const categories: { key: Category; label: string }[] = [

@@ -46,7 +46,7 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
         transition={{ delay: 0.2, duration: 0.3 }}
       >
         {/* Top bar */}
-        <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-neutral-100">
+        <div className="sticky top-0 z-10 bg-white">
           <div className="mx-auto max-w-7xl px-6 h-14 flex items-center">
             <button
               onClick={onClose}
@@ -64,15 +64,15 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
           <div>
             <div className="flex items-center gap-3 mb-6">
               {item.year && (
-                <span className="text-[10px] text-neutral-300 tracking-[0.2em]">
+                <span className="text-[10px] text-neutral-500 tracking-[0.2em]">
                   {item.year}
                 </span>
               )}
-              <span className="text-[10px] text-neutral-300 tracking-[0.15em] uppercase">
+              <span className="text-[10px] text-neutral-500 tracking-[0.15em] uppercase">
                 {item.category === "paper_review" ? "paper review" : item.category}
               </span>
               {item.publication && (
-                <span className="text-[10px] text-neutral-300 tracking-[0.15em] uppercase">
+                <span className="text-[10px] text-neutral-500 tracking-[0.15em] uppercase">
                   · {item.publication}
                 </span>
               )}
