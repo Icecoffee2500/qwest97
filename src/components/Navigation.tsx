@@ -138,7 +138,7 @@ export default function Navigation({
                   onClick={() => onPaperReviewTabChange("field")}
                   className={`${btnBase} text-neutral-400 hover:text-neutral-600`}
                 >
-                  분야
+                  Domain
                 </button>
               </motion.div>
             )}
