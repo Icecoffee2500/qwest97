@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import type { Item } from "@/data/items";
+import MarkdownRenderer from "./MarkdownRenderer";
 
 interface CardDetailProps {
   item: Item;
@@ -91,9 +92,7 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.4 }}
           >
-            <p className="text-sm sm:text-base text-neutral-600 leading-[2] whitespace-pre-line">
-              {item.description}
-            </p>
+            <MarkdownRenderer content={item.description} />
           </motion.div>
 
           {/* Tags */}

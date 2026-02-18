@@ -9,6 +9,7 @@ import {
   deleteItemAction,
   logoutAction,
 } from "@/app/admin/actions";
+import MarkdownEditor from "./MarkdownEditor";
 
 interface Props {
   items: Item[];
@@ -297,13 +298,9 @@ function ItemForm({
 
       <div>
         <label className={labelClass}>Description *</label>
-        <textarea
+        <MarkdownEditor
           name="description"
           defaultValue={item?.description || ""}
-          rows={8}
-          className={`${inputClass} resize-y`}
-          required
-          placeholder="초록, 프로젝트 설명, 자기소개 등"
         />
       </div>
 

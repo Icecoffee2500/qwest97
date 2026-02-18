@@ -115,3 +115,29 @@ export async function deleteItemAction(id: string) {
   revalidatePath("/admin");
   return { success: true };
 }
+
+export async function uploadImageAction(formData: FormData) {
+  const file = formData.get("file") as File;
+  if (!file || file.size === 0) {
+    return { success: false as const, error: "파일이 선택되지 않았습니다", url: null };
+  }
+
+  try {
+    const supabase = createClient();
+    const ext = file.name.split(".").pop() || "png";
+    const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+    const { error } = await supabase.storage
+      .from("images")
+      .upload(filename, file, { contentType: file.type });
+
+    if (error) throw error;
+
+    const { data } = supabase.storage.from("images").getPublicUrl(filename);
+    return { success: true as const, url: data.publicUrl, error: null };
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "업로드에 실패했습니다";
+    return { success: false as const, error: message, url: null };
+  }
+}
