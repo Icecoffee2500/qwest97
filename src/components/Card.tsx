@@ -110,7 +110,7 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
             <div className="flex-1 flex items-center">
               <div>
                 <h3
-                  className={`font-medium text-neutral-900 leading-snug ${
+                  className={`font-medium text-neutral-900 leading-snug break-keep ${
                     enlarged ? "text-lg sm:text-xl" : "text-base"
                   }`}
                 >
@@ -151,7 +151,7 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
 
               <div className="flex-1 flex items-center">
                 <h3
-                  className={`font-medium text-neutral-900 leading-snug ${
+                  className={`font-medium text-neutral-900 leading-snug break-keep ${
                     enlarged ? "text-lg sm:text-xl" : "text-base"
                   }`}
                 >
@@ -169,7 +169,7 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
             </div>
 
             {item.thumbnail && (
-              <div className="flex-shrink-0 flex items-center justify-center w-[30%] -my-1">
+              <div className="flex-shrink-0 flex items-center justify-center w-[40%] -my-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={item.thumbnail}
@@ -203,7 +203,7 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
             </div>
             <div>
               <h3
-                className={`font-medium text-neutral-900 leading-snug ${
+                className={`font-medium text-neutral-900 leading-snug break-keep ${
                   enlarged ? "text-xl sm:text-2xl" : "text-base sm:text-lg"
                 }`}
               >
