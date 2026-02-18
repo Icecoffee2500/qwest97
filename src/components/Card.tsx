@@ -46,15 +46,15 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
 
   const sizeClass = isPaperReview
     ? enlarged
-      ? "p-7 sm:p-8"
-      : "p-5 sm:p-6"
+      ? "p-5 sm:p-6"
+      : "p-4 sm:p-5"
     : isProject
       ? enlarged
-        ? "p-7 sm:p-8"
-        : "p-5 sm:p-6"
+        ? "p-5 sm:p-6"
+        : "p-4 sm:p-5"
       : enlarged
-        ? "aspect-[3/2] p-8 sm:p-10"
-        : "aspect-[4/3] p-6 sm:p-8";
+        ? "aspect-[3/2] p-6 sm:p-8"
+        : "aspect-[4/3] p-5 sm:p-6";
 
   return (
     <motion.div
@@ -76,8 +76,8 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
         transition={{ type: "spring", stiffness: 200, damping: 28 }}
       >
         {isPaperReview ? (
-          <>
-            <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col min-h-[100px]">
+            <div className="flex items-center justify-between">
               <div
                 className={`flex items-center gap-1.5 ${
                   enlarged ? "text-[11px]" : "text-[9px]"
@@ -106,28 +106,31 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
                 {[item.publication, item.year].filter(Boolean).join(" ")}
               </span>
             </div>
-            <div>
-              <h3
-                className={`font-medium text-neutral-900 leading-snug ${
-                  enlarged ? "text-base sm:text-lg" : "text-sm"
-                }`}
-              >
-                {item.title}
-              </h3>
-              {item.subtitle && (
-                <p
-                  className={`mt-1.5 text-neutral-400 font-light tracking-wide ${
-                    enlarged ? "text-xs" : "text-[11px]"
+
+            <div className="flex-1 flex items-center">
+              <div>
+                <h3
+                  className={`font-medium text-neutral-900 leading-snug ${
+                    enlarged ? "text-lg sm:text-xl" : "text-base"
                   }`}
                 >
-                  {item.subtitle}
-                </p>
-              )}
+                  {item.title}
+                </h3>
+                {item.subtitle && (
+                  <p
+                    className={`mt-1.5 text-neutral-400 font-light tracking-wide ${
+                      enlarged ? "text-xs" : "text-[11px]"
+                    }`}
+                  >
+                    {item.subtitle}
+                  </p>
+                )}
+              </div>
             </div>
-          </>
+          </div>
         ) : isProject ? (
           <div className="flex gap-4">
-            <div className="flex flex-col flex-1 min-w-0">
+            <div className="flex flex-col flex-1 min-w-0 min-h-[120px]">
               <div
                 className={`flex items-center gap-1.5 ${
                   enlarged ? "text-[11px]" : "text-[9px]"
@@ -149,7 +152,7 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
               <div className="flex-1 flex items-center">
                 <h3
                   className={`font-medium text-neutral-900 leading-snug ${
-                    enlarged ? "text-base sm:text-lg" : "text-sm"
+                    enlarged ? "text-lg sm:text-xl" : "text-base"
                   }`}
                 >
                   {item.title}
@@ -166,16 +169,12 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
             </div>
 
             {item.thumbnail && (
-              <div
-                className={`flex-shrink-0 flex items-center justify-center w-[45%] ${
-                  enlarged ? "h-20" : "h-14"
-                }`}
-              >
+              <div className="flex-shrink-0 flex items-center justify-center w-[30%] -my-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={item.thumbnail}
                   alt={item.collaborator || item.title}
-                  className="max-h-full max-w-full object-contain"
+                  className="w-full object-contain"
                 />
               </div>
             )}
@@ -205,7 +204,7 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
             <div>
               <h3
                 className={`font-medium text-neutral-900 leading-snug ${
-                  enlarged ? "text-lg sm:text-xl" : "text-sm sm:text-base"
+                  enlarged ? "text-xl sm:text-2xl" : "text-base sm:text-lg"
                 }`}
               >
                 {item.title}
