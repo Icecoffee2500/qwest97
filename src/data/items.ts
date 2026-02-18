@@ -4,11 +4,11 @@ export interface Item {
   id: string;
   category: Exclude<Category, "all">;
   title: string;
-  subtitle?: string;
+  subtitle?: string | null;
   description: string;
-  tags?: string[];
-  links?: { label: string; url: string }[];
-  year?: number;
+  tags?: string[] | null;
+  links?: { label: string; url: string }[] | null;
+  year?: number | null;
 }
 
 export const categories: { key: Category; label: string }[] = [
