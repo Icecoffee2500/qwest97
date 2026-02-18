@@ -20,7 +20,7 @@ interface NavigationProps {
 
 const transition = { duration: 0.2 };
 const btnBase =
-  "relative text-[10px] sm:text-xs tracking-[0.15em] uppercase px-1 py-1 transition-colors duration-200 whitespace-nowrap";
+  "relative text-[9px] sm:text-xs tracking-[0.08em] sm:tracking-[0.15em] uppercase px-0.5 sm:px-1 py-1 transition-colors duration-200 whitespace-nowrap";
 
 function Indicator() {
   return (
@@ -57,7 +57,7 @@ export default function Navigation({
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-30 bg-white">
-      <div className="mx-auto max-w-7xl px-6 grid grid-cols-[auto_1fr_auto] items-center h-14 gap-4">
+      <div className="mx-auto max-w-7xl px-3 sm:px-6 grid grid-cols-[auto_1fr_auto] items-center h-14 gap-2 sm:gap-4">
         {/* Left */}
         <div className="flex items-center justify-start">
           {isPaperReview ? (
@@ -80,7 +80,7 @@ export default function Navigation({
         </div>
 
         {/* Center */}
-        <div className="flex items-center justify-center overflow-x-auto scrollbar-hide">
+        <div className="flex items-center justify-center overflow-x-auto scrollbar-hide -mx-1 px-1" style={{ WebkitOverflowScrolling: "touch" }}>
           <AnimatePresence mode="wait">
             {!isPaperReview && (
               <motion.div
@@ -89,7 +89,7 @@ export default function Navigation({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 4 }}
                 transition={transition}
-                className="flex items-center gap-2 sm:gap-5"
+                className="flex items-center gap-1 sm:gap-5"
               >
                 {categories.map((cat) => (
                   <button
@@ -115,7 +115,7 @@ export default function Navigation({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 4 }}
                 transition={transition}
-                className="flex items-center gap-2 sm:gap-5"
+                className="flex items-center gap-1 sm:gap-5"
               >
                 <button
                   onClick={() => onFilterChange(null)}
@@ -150,7 +150,7 @@ export default function Navigation({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 4 }}
                 transition={transition}
-                className="flex items-center gap-2 sm:gap-4"
+                className="flex items-center gap-1 sm:gap-4"
               >
                 <button
                   onClick={() => onFilterChange(null)}
@@ -187,7 +187,7 @@ export default function Navigation({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 4 }}
                 transition={transition}
-                className="flex items-center gap-2 sm:gap-4"
+                className="flex items-center gap-1 sm:gap-4"
               >
                 <button
                   onClick={() => onFilterChange(null)}
@@ -223,9 +223,10 @@ export default function Navigation({
         <div className="flex items-center justify-end">
           <a
             href="/"
-            className="text-xs font-medium tracking-[0.25em] uppercase text-black"
+            className="text-[10px] sm:text-xs font-medium tracking-[0.12em] sm:tracking-[0.25em] uppercase text-black"
           >
-            Taeheon Lim
+            <span className="hidden sm:inline">Taeheon Lim</span>
+            <span className="sm:hidden">TH</span>
           </a>
         </div>
       </div>

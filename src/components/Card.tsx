@@ -88,21 +88,21 @@ export default function Card({ item, enlarged, showCategoryBorder = true, onClic
         }}
       >
         {isPaperReview ? (
-          <div className="flex flex-col min-h-[100px]">
-            <div className="flex items-center justify-between">
+          <div className="flex flex-col min-h-[100px] overflow-hidden">
+            <div className="flex items-center justify-between gap-2">
               <div
-                className={`flex items-center gap-1.5 ${
+                className={`flex items-center gap-1.5 min-w-0 ${
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
               >
-                <span className="tracking-[0.15em] uppercase font-medium" style={{ color: "#FF9500" }}>
+                <span className="tracking-[0.1em] sm:tracking-[0.15em] uppercase font-medium flex-shrink-0" style={{ color: "#FF9500" }}>
                   Paper Review
                 </span>
                 {domain && (
                   <>
-                    <span className="text-neutral-300">|</span>
+                    <span className="text-neutral-300 flex-shrink-0">|</span>
                     <span
-                      className="tracking-[0.1em] uppercase font-medium truncate text-neutral-900"
+                      className="tracking-[0.05em] sm:tracking-[0.1em] uppercase font-medium truncate text-neutral-900"
                     >
                       {domain}
                     </span>
@@ -110,7 +110,7 @@ export default function Card({ item, enlarged, showCategoryBorder = true, onClic
                 )}
               </div>
               <span
-                className={`text-neutral-400 tracking-[0.15em] uppercase font-medium flex-shrink-0 ${
+                className={`text-neutral-400 tracking-[0.1em] sm:tracking-[0.15em] uppercase font-medium flex-shrink-0 ${
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
               >
@@ -140,9 +140,9 @@ export default function Card({ item, enlarged, showCategoryBorder = true, onClic
             </div>
 
             {item.tags && item.tags.length > 0 && (
-              <div className="flex justify-start">
+              <div className="flex justify-start min-w-0">
                 <span
-                  className={`text-neutral-400 tracking-[0.1em] font-medium ${
+                  className={`text-neutral-400 tracking-[0.05em] sm:tracking-[0.1em] font-medium truncate ${
                     enlarged ? "text-xs" : "text-[10px]"
                   }`}
                 >
@@ -152,20 +152,20 @@ export default function Card({ item, enlarged, showCategoryBorder = true, onClic
             )}
           </div>
         ) : isProject ? (
-          <div className="flex gap-4">
+          <div className="flex gap-3 sm:gap-4 overflow-hidden">
             <div className="flex flex-col flex-1 min-w-0 min-h-[120px]">
               <div
-                className={`flex items-center gap-1.5 ${
+                className={`flex items-center gap-1.5 min-w-0 ${
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
               >
-                <span className="tracking-[0.15em] uppercase font-medium" style={{ color: "#5856D6" }}>
+                <span className="tracking-[0.1em] sm:tracking-[0.15em] uppercase font-medium flex-shrink-0" style={{ color: "#5856D6" }}>
                   Project
                 </span>
                 {item.collaborator && (
                   <>
-                    <span className="text-neutral-300">|</span>
-                    <span className="text-neutral-900 tracking-[0.1em] uppercase font-semibold truncate">
+                    <span className="text-neutral-300 flex-shrink-0">|</span>
+                    <span className="text-neutral-900 tracking-[0.05em] sm:tracking-[0.1em] uppercase font-semibold truncate">
                       {item.collaborator}
                     </span>
                   </>
@@ -192,7 +192,7 @@ export default function Card({ item, enlarged, showCategoryBorder = true, onClic
             </div>
 
             {item.thumbnail && (
-              <div className="flex-shrink-0 flex items-center justify-center w-[40%] -my-1">
+              <div className="flex-shrink-0 flex items-center justify-center w-[35%] sm:w-[40%] -my-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={item.thumbnail}
@@ -203,10 +203,10 @@ export default function Card({ item, enlarged, showCategoryBorder = true, onClic
             )}
           </div>
         ) : isResearch ? (
-          <div className="flex flex-col min-h-[100px]">
-            <div className="flex items-center justify-between">
+          <div className="flex flex-col min-h-[100px] overflow-hidden">
+            <div className="flex items-center justify-between gap-2">
               <span
-                className={`tracking-[0.15em] uppercase font-medium ${
+                className={`tracking-[0.1em] sm:tracking-[0.15em] uppercase font-medium flex-shrink-0 ${
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
                 style={{ color: "#32ADE6" }}
@@ -214,7 +214,7 @@ export default function Card({ item, enlarged, showCategoryBorder = true, onClic
                 Research
               </span>
               <span
-                className={`text-neutral-400 tracking-[0.15em] uppercase font-medium flex-shrink-0 ${
+                className={`text-neutral-400 tracking-[0.1em] sm:tracking-[0.15em] uppercase font-medium flex-shrink-0 ${
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
               >
@@ -234,7 +234,7 @@ export default function Card({ item, enlarged, showCategoryBorder = true, onClic
 
             {item.tags && item.tags.length > 0 && (
               <p
-                className={`text-neutral-400 tracking-[0.1em] font-medium ${
+                className={`text-neutral-400 tracking-[0.05em] sm:tracking-[0.1em] font-medium truncate ${
                   enlarged ? "text-xs" : "text-[10px]"
                 }`}
               >
@@ -243,11 +243,11 @@ export default function Card({ item, enlarged, showCategoryBorder = true, onClic
             )}
           </div>
         ) : (
-          <div className="flex flex-col min-h-[100px]">
-            <div className="flex justify-between items-start">
+          <div className="flex flex-col min-h-[100px] overflow-hidden">
+            <div className="flex justify-between items-start gap-2">
               {item.year ? (
                 <span
-                  className={`text-neutral-400 tracking-[0.2em] font-medium ${
+                  className={`text-neutral-400 tracking-[0.15em] sm:tracking-[0.2em] font-medium ${
                     enlarged ? "text-[11px]" : "text-[9px]"
                   }`}
                 >
@@ -257,7 +257,7 @@ export default function Card({ item, enlarged, showCategoryBorder = true, onClic
                 <span />
               )}
               <span
-                className={`text-neutral-400 tracking-[0.15em] uppercase font-medium ${
+                className={`text-neutral-400 tracking-[0.1em] sm:tracking-[0.15em] uppercase font-medium ${
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
               >

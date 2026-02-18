@@ -47,7 +47,7 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
       >
         {/* Top bar */}
         <div className="sticky top-0 z-10 bg-white">
-          <div className="mx-auto max-w-7xl px-6 h-14 flex items-center">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 h-14 flex items-center">
             <button
               onClick={onClose}
               className="text-neutral-400 hover:text-black transition-colors duration-200 text-lg leading-none"
@@ -59,25 +59,25 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
         </div>
 
         {/* Content */}
-        <div className="mx-auto max-w-3xl px-6 pt-16 pb-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-10 sm:pt-16 pb-24">
           {/* Header */}
           <div>
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
               {item.year && (
-                <span className="text-[10px] text-neutral-500 tracking-[0.2em]">
+                <span className="text-[9px] sm:text-[10px] text-neutral-500 tracking-[0.15em] sm:tracking-[0.2em]">
                   {item.year}
                 </span>
               )}
-              <span className="text-[10px] text-neutral-500 tracking-[0.15em] uppercase">
+              <span className="text-[9px] sm:text-[10px] text-neutral-500 tracking-[0.1em] sm:tracking-[0.15em] uppercase">
                 {item.category === "paper_review" ? "paper review" : item.category}
               </span>
               {item.publication && (
-                <span className="text-[10px] text-neutral-500 tracking-[0.15em] uppercase">
+                <span className="text-[9px] sm:text-[10px] text-neutral-500 tracking-[0.1em] sm:tracking-[0.15em] uppercase">
                   · {item.publication}
                 </span>
               )}
             </div>
-            <h1 className="text-3xl sm:text-4xl font-medium text-black leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-medium text-black leading-tight break-keep">
               {item.title}
             </h1>
             {item.subtitle && (
@@ -88,14 +88,14 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
 
             {/* Links — directly under title */}
             {item.links && item.links.length > 0 && (
-              <div className="flex flex-wrap gap-4 mt-5">
+              <div className="flex flex-wrap gap-3 sm:gap-4 mt-4 sm:mt-5">
                 {item.links.map((link) => (
                   <a
                     key={link.label}
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[11px] tracking-wider text-black border-b border-black pb-0.5 hover:text-neutral-400 hover:border-neutral-400 transition-colors duration-200 uppercase"
+                    className="text-[10px] sm:text-[11px] tracking-wider text-black border-b border-black pb-0.5 hover:text-neutral-400 hover:border-neutral-400 transition-colors duration-200 uppercase"
                   >
                     {link.label}
                   </a>
@@ -106,7 +106,7 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
 
           {/* Divider */}
           <motion.div
-            className="mt-10 mb-10 h-px bg-neutral-100"
+            className="mt-8 mb-8 sm:mt-10 sm:mb-10 h-px bg-neutral-100"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
@@ -133,7 +133,7 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
               {item.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-[10px] tracking-wider px-3 py-1.5 bg-neutral-50 text-neutral-500 uppercase"
+                  className="text-[9px] sm:text-[10px] tracking-wider px-2.5 sm:px-3 py-1 sm:py-1.5 bg-neutral-50 text-neutral-500 uppercase"
                 >
                   {tag}
                 </span>
