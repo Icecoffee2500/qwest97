@@ -225,7 +225,7 @@ export default function Navigation({
             href="/"
             className="text-xs font-medium tracking-[0.25em] uppercase text-black"
           >
-            qwest
+            Taeheon Lim
           </a>
         </div>
       </div>
