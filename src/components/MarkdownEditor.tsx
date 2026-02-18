@@ -1,8 +1,13 @@
 "use client";
 
 import { useState, useRef, useTransition } from "react";
+import dynamic from "next/dynamic";
 import { uploadImageAction } from "@/app/admin/actions";
-import MarkdownRenderer from "./MarkdownRenderer";
+
+const MarkdownRenderer = dynamic(() => import("./MarkdownRenderer"), {
+  ssr: false,
+  loading: () => <div className="animate-pulse h-20 bg-neutral-50" />,
+});
 
 interface MarkdownEditorProps {
   name: string;

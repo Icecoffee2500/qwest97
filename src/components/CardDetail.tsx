@@ -2,8 +2,13 @@
 
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 import type { Item } from "@/data/items";
-import MarkdownRenderer from "./MarkdownRenderer";
+
+const MarkdownRenderer = dynamic(() => import("./MarkdownRenderer"), {
+  ssr: false,
+  loading: () => <div className="animate-pulse h-20 bg-neutral-50" />,
+});
 
 interface CardDetailProps {
   item: Item;
