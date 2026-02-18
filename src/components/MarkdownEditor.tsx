@@ -1,26 +1,24 @@
 "use client";
 
-import { useState, useRef, useTransition, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { uploadImageAction } from "@/app/admin/actions";
 
 const MarkdownRenderer = dynamic(() => import("./MarkdownRenderer"), {
   ssr: false,
   loading: () => <div className="animate-pulse h-20 bg-neutral-50" />,
 });
 
-const MAX_SIZE_MB = 3;
 const MAX_WIDTH = 1600;
-const QUALITY = 0.85;
+const QUALITY = 0.82;
 
 function compressImage(file: File): Promise<File> {
   return new Promise((resolve, reject) => {
-    if (file.size <= MAX_SIZE_MB * 1024 * 1024) {
+    if (!file.type.startsWith("image/")) {
       resolve(file);
       return;
     }
 
-    const img = new Image();
+    const img = new window.Image();
     const url = URL.createObjectURL(file);
 
     img.onload = () => {
@@ -76,7 +74,6 @@ export default function MarkdownEditor({
   const [dragging, setDragging] = useState(false);
   const [uploadError, setUploadError] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [, startTransition] = useTransition();
 
   function insertAtCursor(before: string, after: string = "") {
     const textarea = textareaRef.current;
@@ -107,39 +104,38 @@ export default function MarkdownEditor({
   }
 
   const uploadFile = useCallback(
-    (file: File) => {
+    async (file: File) => {
       if (!file.type.startsWith("image/")) return;
 
       setUploadError("");
       setUploading(true);
 
-      startTransition(async () => {
-        try {
-          const compressed = await compressImage(file);
+      try {
+        const compressed = await compressImage(file);
 
-          const fd = new FormData();
-          fd.set("file", compressed);
+        const fd = new FormData();
+        fd.set("file", compressed);
 
-          const result = await uploadImageAction(fd);
-          setUploading(false);
+        const res = await fetch("/api/upload", { method: "POST", body: fd });
+        const result = await res.json();
+        setUploading(false);
 
-          if (result.success && result.url) {
-            const textarea = textareaRef.current;
-            const pos = textarea ? textarea.selectionStart : value.length;
-            const img = `\n![${file.name || "image"}](${result.url})\n`;
-            setValue((v) => v.substring(0, pos) + img + v.substring(pos));
-          } else {
-            setUploadError(result.error || "업로드에 실패했습니다");
-          }
-        } catch (err) {
-          setUploading(false);
-          setUploadError(
-            err instanceof Error ? err.message : "업로드 중 오류가 발생했습니다"
-          );
+        if (result.success && result.url) {
+          const textarea = textareaRef.current;
+          const pos = textarea ? textarea.selectionStart : value.length;
+          const img = `\n![${file.name || "image"}](${result.url})\n`;
+          setValue((v) => v.substring(0, pos) + img + v.substring(pos));
+        } else {
+          setUploadError(result.error || "업로드에 실패했습니다");
         }
-      });
+      } catch (err) {
+        setUploading(false);
+        setUploadError(
+          err instanceof Error ? err.message : "업로드 중 오류가 발생했습니다"
+        );
+      }
     },
-    [value, startTransition]
+    [value]
   );
 
   function handleImageUpload() {
