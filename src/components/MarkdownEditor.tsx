@@ -22,6 +22,7 @@ export default function MarkdownEditor({
   const [mode, setMode] = useState<"write" | "preview">("write");
   const [uploading, setUploading] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [uploadError, setUploadError] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [, startTransition] = useTransition();
 
@@ -52,18 +53,26 @@ export default function MarkdownEditor({
   function uploadFile(file: File) {
     if (!file.type.startsWith("image/")) return;
 
+    setUploadError("");
     setUploading(true);
     const fd = new FormData();
     fd.set("file", file);
 
     startTransition(async () => {
-      const result = await uploadImageAction(fd);
-      setUploading(false);
-      if (result.success && result.url) {
-        const textarea = textareaRef.current;
-        const pos = textarea ? textarea.selectionStart : value.length;
-        const img = `\n![${file.name}](${result.url})\n`;
-        setValue((v) => v.substring(0, pos) + img + v.substring(pos));
+      try {
+        const result = await uploadImageAction(fd);
+        setUploading(false);
+        if (result.success && result.url) {
+          const textarea = textareaRef.current;
+          const pos = textarea ? textarea.selectionStart : value.length;
+          const img = `\n![${file.name}](${result.url})\n`;
+          setValue((v) => v.substring(0, pos) + img + v.substring(pos));
+        } else {
+          setUploadError(result.error || "업로드에 실패했습니다");
+        }
+      } catch {
+        setUploading(false);
+        setUploadError("업로드 중 오류가 발생했습니다");
       }
     });
   }
@@ -130,6 +139,11 @@ export default function MarkdownEditor({
         {uploading && (
           <span className="text-[10px] text-neutral-400 animate-pulse ml-2">
             업로드 중...
+          </span>
+        )}
+        {uploadError && (
+          <span className="text-[10px] text-red-500 ml-2">
+            {uploadError}
           </span>
         )}
 

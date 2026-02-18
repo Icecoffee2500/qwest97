@@ -117,19 +117,29 @@ export async function deleteItemAction(id: string) {
 }
 
 export async function uploadImageAction(formData: FormData) {
-  const file = formData.get("file") as File;
-  if (!file || file.size === 0) {
-    return { success: false as const, error: "파일이 선택되지 않았습니다", url: null };
-  }
-
   try {
+    const file = formData.get("file");
+    if (!file || !(file instanceof File) || file.size === 0) {
+      return { success: false as const, error: "파일이 선택되지 않았습니다", url: null };
+    }
+
+    if (file.size > 4 * 1024 * 1024) {
+      return { success: false as const, error: "파일 크기는 4MB 이하여야 합니다", url: null };
+    }
+
     const supabase = createClient();
-    const ext = file.name.split(".").pop() || "png";
+    const ext = file.name?.split(".").pop() || "png";
     const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = new Uint8Array(arrayBuffer);
 
     const { error } = await supabase.storage
       .from("images")
-      .upload(filename, file, { contentType: file.type });
+      .upload(filename, buffer, {
+        contentType: file.type || "image/png",
+        upsert: false,
+      });
 
     if (error) throw error;
 
