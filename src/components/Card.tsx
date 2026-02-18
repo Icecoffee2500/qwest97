@@ -69,9 +69,9 @@ export default function Card({ item, enlarged, showCategoryBorder = true, onClic
         layout: { type: "spring", stiffness: 300, damping: 30 },
         opacity: { duration: 0.2 },
       }}
-      whileHover={{ y: -2 }}
+      whileHover={isProject ? undefined : { y: -2 }}
       onClick={onClick}
-      className="cursor-pointer group"
+      className={`group ${isProject ? "cursor-default" : "cursor-pointer"}`}
     >
       <motion.div
         layoutId={`card-${item.id}`}

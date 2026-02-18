@@ -95,7 +95,15 @@ export default function Portfolio({ items }: PortfolioProps) {
                 item={item}
                 enlarged={enlarged}
                 showCategoryBorder={activeCategory === "all"}
-                onClick={() => setSelectedItem(item)}
+                onClick={() => {
+                  if (item.category === "project") return;
+                  if (item.category === "research") {
+                    const url = item.links?.[0]?.url;
+                    if (url) window.open(url, "_blank", "noopener,noreferrer");
+                    return;
+                  }
+                  setSelectedItem(item);
+                }}
               />
             ))}
           </AnimatePresence>

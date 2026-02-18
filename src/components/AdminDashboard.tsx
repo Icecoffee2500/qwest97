@@ -417,7 +417,7 @@ function ItemForm({
         />
       </div>
 
-      {selectedCategory !== "project" && selectedCategory !== "research" && (
+      {selectedCategory === "about" && (
         <div>
           <label className={labelClass}>Subtitle</label>
           <input
@@ -442,13 +442,15 @@ function ItemForm({
         </div>
       )}
 
-      <div>
-        <label className={labelClass}>Description *</label>
-        <MarkdownEditor
-          name="description"
-          defaultValue={item?.description || ""}
-        />
-      </div>
+      {selectedCategory !== "research" && selectedCategory !== "project" && (
+        <div>
+          <label className={labelClass}>Description *</label>
+          <MarkdownEditor
+            name="description"
+            defaultValue={item?.description || ""}
+          />
+        </div>
+      )}
 
       <div>
         <label className={labelClass}>Tags (쉼표로 구분)</label>
