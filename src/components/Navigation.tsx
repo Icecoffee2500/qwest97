@@ -26,7 +26,7 @@ function Indicator() {
   return (
     <motion.div
       layoutId="nav-indicator"
-      className="absolute bottom-0 left-1 right-1 h-px bg-black"
+      className="absolute left-1 right-1 h-px bg-black top-0 sm:top-auto sm:bottom-0"
       transition={{ type: "spring", stiffness: 500, damping: 35 }}
     />
   );
@@ -56,8 +56,8 @@ export default function Navigation({
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-30 bg-white">
-      <div className="mx-auto max-w-7xl px-3 sm:px-6 grid grid-cols-[auto_1fr_auto] items-center h-14 gap-2 sm:gap-4">
+    <nav className="fixed bottom-0 sm:top-0 sm:bottom-auto left-0 right-0 z-30 bg-white border-t border-neutral-100 sm:border-t-0 pb-[env(safe-area-inset-bottom)]">
+      <div className="mx-auto max-w-7xl px-3 sm:px-6 grid grid-cols-[auto_1fr_auto] items-center h-12 sm:h-14 gap-2 sm:gap-4">
         {/* Left */}
         <div className="flex items-center justify-start">
           {isPaperReview ? (

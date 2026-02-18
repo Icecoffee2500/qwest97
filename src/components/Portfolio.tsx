@@ -78,7 +78,7 @@ export default function Portfolio({ items }: PortfolioProps) {
         onFilterChange={setActiveFilter}
       />
 
-      <main className="flex-1 mx-auto w-full max-w-7xl px-3 sm:px-6 pt-20 sm:pt-24 pb-16 sm:pb-20">
+      <main className="flex-1 mx-auto w-full max-w-7xl px-3 sm:px-6 pt-6 sm:pt-24 pb-24 sm:pb-20">
         <motion.div
           layout
           className={`grid gap-4 ${
