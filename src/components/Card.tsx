@@ -124,7 +124,7 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
               <div className="flex justify-start">
                 <span
                   className={`text-neutral-400 tracking-[0.1em] font-medium ${
-                    enlarged ? "text-[11px]" : "text-[9px]"
+                    enlarged ? "text-xs" : "text-[10px]"
                   }`}
                 >
                   {item.tags.join(" · ")}
@@ -165,7 +165,7 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
 
               <p
                 className={`font-medium text-neutral-400 tracking-wide ${
-                  enlarged ? "text-xs" : "text-[11px]"
+                  enlarged ? "text-xs" : "text-[10px]"
                 }`}
               >
                 {formatPeriod(item.period_start, item.period_end)}
@@ -215,7 +215,7 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
             {item.tags && item.tags.length > 0 && (
               <p
                 className={`text-neutral-400 tracking-[0.1em] font-medium ${
-                  enlarged ? "text-[11px]" : "text-[9px]"
+                  enlarged ? "text-xs" : "text-[10px]"
                 }`}
               >
                 {item.tags.join(" · ")}
@@ -256,7 +256,7 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
                 {item.subtitle && (
                   <p
                     className={`mt-1 text-neutral-400 font-light tracking-wide ${
-                      enlarged ? "text-xs" : "text-[11px]"
+                      enlarged ? "text-xs" : "text-[10px]"
                     }`}
                   >
                     {item.subtitle}
