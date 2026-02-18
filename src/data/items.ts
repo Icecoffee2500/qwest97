@@ -10,6 +10,7 @@ export interface Item {
   links?: { label: string; url: string }[] | null;
   year?: number | null;
   publication?: string | null;
+  domain?: string | null;
   collaborator?: string | null;
   thumbnail?: string | null;
   period_start?: string | null;

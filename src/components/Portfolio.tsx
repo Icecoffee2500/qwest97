@@ -33,10 +33,10 @@ export default function Portfolio({ items }: PortfolioProps) {
     return Array.from(set).sort();
   }, [paperReviewItems]);
 
-  const paperReviewTags = useMemo(() => {
+  const paperReviewDomains = useMemo(() => {
     const set = new Set<string>();
     paperReviewItems.forEach((i) => {
-      i.tags?.forEach((t) => set.add(t));
+      if (i.domain) set.add(i.domain);
     });
     return Array.from(set).sort();
   }, [paperReviewItems]);
@@ -48,7 +48,7 @@ export default function Portfolio({ items }: PortfolioProps) {
         return paperReviewItems.filter((i) => i.publication === activeFilter);
       }
       if (paperReviewTab === "field") {
-        return paperReviewItems.filter((i) => i.tags?.includes(activeFilter));
+        return paperReviewItems.filter((i) => i.domain === activeFilter);
       }
       return paperReviewItems;
     }
@@ -73,7 +73,7 @@ export default function Portfolio({ items }: PortfolioProps) {
         paperReviewTab={paperReviewTab}
         onPaperReviewTabChange={setPaperReviewTab}
         paperReviewPublications={paperReviewPublications}
-        paperReviewTags={paperReviewTags}
+        paperReviewTags={paperReviewDomains}
         activeFilter={activeFilter}
         onFilterChange={setActiveFilter}
       />

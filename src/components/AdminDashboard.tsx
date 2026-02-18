@@ -291,21 +291,32 @@ function ItemForm({
       </div>
 
       {selectedCategory === "paper_review" && (
-        <div>
-          <label className={labelClass}>Publication</label>
-          <select
-            name="publication"
-            defaultValue={item?.publication || ""}
-            className={inputClass}
-          >
-            <option value="">선택하세요</option>
-            {publications.map((pub) => (
-              <option key={pub} value={pub}>
-                {pub}
-              </option>
-            ))}
-          </select>
-        </div>
+        <>
+          <div>
+            <label className={labelClass}>Publication</label>
+            <select
+              name="publication"
+              defaultValue={item?.publication || ""}
+              className={inputClass}
+            >
+              <option value="">선택하세요</option>
+              {publications.map((pub) => (
+                <option key={pub} value={pub}>
+                  {pub}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className={labelClass}>Domain</label>
+            <input
+              name="domain"
+              defaultValue={item?.domain || ""}
+              className={inputClass}
+              placeholder="예: Scene Graph Generation, Object Detection 등"
+            />
+          </div>
+        </>
       )}
 
       {selectedCategory === "project" && (

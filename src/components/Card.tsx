@@ -42,7 +42,7 @@ function formatPeriod(start?: string | null, end?: string | null): string {
 export default function Card({ item, enlarged, onClick }: CardProps) {
   const isPaperReview = item.category === "paper_review";
   const isProject = item.category === "project";
-  const domain = item.tags?.[0] || null;
+  const domain = item.domain || null;
 
   const sizeClass = isPaperReview
     ? enlarged
@@ -127,6 +127,18 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
                 )}
               </div>
             </div>
+
+            {item.tags && item.tags.length > 0 && (
+              <div className="flex justify-end">
+                <span
+                  className={`text-neutral-400 tracking-[0.1em] font-medium ${
+                    enlarged ? "text-[11px]" : "text-[9px]"
+                  }`}
+                >
+                  {item.tags.join(" · ")}
+                </span>
+              </div>
+            )}
           </div>
         ) : isProject ? (
           <div className="flex gap-4">
