@@ -56,6 +56,7 @@ export async function createItemAction(formData: FormData) {
     tags,
     links,
     year: yearRaw ? parseInt(yearRaw) : null,
+    publication: (formData.get("publication") as string) || null,
   });
 
   if (error) {
@@ -90,6 +91,7 @@ export async function updateItemAction(id: string, formData: FormData) {
       tags,
       links,
       year: yearRaw ? parseInt(yearRaw) : null,
+      publication: (formData.get("publication") as string) || null,
     })
     .eq("id", id);
 

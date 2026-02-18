@@ -9,6 +9,7 @@ export interface Item {
   tags?: string[] | null;
   links?: { label: string; url: string }[] | null;
   year?: number | null;
+  publication?: string | null;
 }
 
 export const categories: { key: Category; label: string }[] = [
@@ -18,6 +19,29 @@ export const categories: { key: Category; label: string }[] = [
   { key: "project", label: "PROJECTS" },
   { key: "about", label: "ABOUT" },
 ];
+
+export const publications = [
+  "CVPR",
+  "ICCV",
+  "ECCV",
+  "NeurIPS",
+  "ICML",
+  "ICLR",
+  "AAAI",
+  "IJCAI",
+  "ACL",
+  "EMNLP",
+  "NAACL",
+  "SIGIR",
+  "KDD",
+  "ICRA",
+  "IROS",
+  "TPAMI",
+  "IJCV",
+  "TIP",
+  "JMLR",
+  "Other",
+] as const;
 
 export const items: Item[] = [
   {

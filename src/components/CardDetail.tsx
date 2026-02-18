@@ -69,8 +69,13 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
                 </span>
               )}
               <span className="text-[10px] text-neutral-300 tracking-[0.15em] uppercase">
-                {item.category}
+                {item.category === "paper_review" ? "paper review" : item.category}
               </span>
+              {item.publication && (
+                <span className="text-[10px] text-neutral-300 tracking-[0.15em] uppercase">
+                  · {item.publication}
+                </span>
+              )}
             </div>
             <h1 className="text-3xl sm:text-4xl font-medium text-black leading-tight">
               {item.title}
@@ -79,6 +84,23 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
               <p className="mt-3 text-sm text-neutral-400 font-light tracking-wide">
                 {item.subtitle}
               </p>
+            )}
+
+            {/* Links — directly under title */}
+            {item.links && item.links.length > 0 && (
+              <div className="flex flex-wrap gap-4 mt-5">
+                {item.links.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] tracking-wider text-black border-b border-black pb-0.5 hover:text-neutral-400 hover:border-neutral-400 transition-colors duration-200 uppercase"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
             )}
           </div>
 
@@ -115,28 +137,6 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
                 >
                   {tag}
                 </span>
-              ))}
-            </motion.div>
-          )}
-
-          {/* Links */}
-          {item.links && item.links.length > 0 && (
-            <motion.div
-              className="flex flex-wrap gap-5 mt-14 pt-10 border-t border-neutral-100"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.45 }}
-            >
-              {item.links.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] tracking-wider text-black border-b border-black pb-0.5 hover:text-neutral-400 hover:border-neutral-400 transition-colors duration-200 uppercase"
-                >
-                  {link.label}
-                </a>
               ))}
             </motion.div>
           )}

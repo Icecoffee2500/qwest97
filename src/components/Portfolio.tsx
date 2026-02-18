@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Category, Item } from "@/data/items";
-import Navigation from "@/components/Navigation";
+import Navigation, { type PaperReviewTab } from "@/components/Navigation";
 import Card from "@/components/Card";
 import CardDetail from "@/components/CardDetail";
 import Footer from "@/components/Footer";
@@ -16,32 +16,51 @@ export default function Portfolio({ items }: PortfolioProps) {
   const [activeCategory, setActiveCategory] = useState<Category>("all");
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [enlarged, setEnlarged] = useState(false);
-  const [activeTag, setActiveTag] = useState<string | null>(null);
+
+  const [paperReviewTab, setPaperReviewTab] = useState<PaperReviewTab>("main");
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+
+  const paperReviewItems = useMemo(
+    () => items.filter((i) => i.category === "paper_review"),
+    [items]
+  );
+
+  const paperReviewPublications = useMemo(() => {
+    const set = new Set<string>();
+    paperReviewItems.forEach((i) => {
+      if (i.publication) set.add(i.publication);
+    });
+    return Array.from(set).sort();
+  }, [paperReviewItems]);
 
   const paperReviewTags = useMemo(() => {
-    const tagSet = new Set<string>();
-    items
-      .filter((item) => item.category === "paper_review")
-      .forEach((item) => {
-        item.tags?.forEach((tag) => tagSet.add(tag));
-      });
-    return Array.from(tagSet).sort();
-  }, [items]);
+    const set = new Set<string>();
+    paperReviewItems.forEach((i) => {
+      i.tags?.forEach((t) => set.add(t));
+    });
+    return Array.from(set).sort();
+  }, [paperReviewItems]);
 
   const filteredItems = useMemo(() => {
     if (activeCategory === "paper_review") {
-      const prItems = items.filter((i) => i.category === "paper_review");
-      if (!activeTag) return prItems;
-      return prItems.filter((i) => i.tags?.includes(activeTag));
+      if (!activeFilter) return paperReviewItems;
+      if (paperReviewTab === "publication") {
+        return paperReviewItems.filter((i) => i.publication === activeFilter);
+      }
+      if (paperReviewTab === "field") {
+        return paperReviewItems.filter((i) => i.tags?.includes(activeFilter));
+      }
+      return paperReviewItems;
     }
     if (activeCategory === "all") return items;
     return items.filter((i) => i.category === activeCategory);
-  }, [items, activeCategory, activeTag]);
+  }, [items, activeCategory, activeFilter, paperReviewTab, paperReviewItems]);
 
   function handleCategoryChange(cat: Category) {
     setActiveCategory(cat);
     setSelectedItem(null);
-    if (cat !== "paper_review") setActiveTag(null);
+    setPaperReviewTab("main");
+    setActiveFilter(null);
   }
 
   return (
@@ -51,9 +70,12 @@ export default function Portfolio({ items }: PortfolioProps) {
         onCategoryChange={handleCategoryChange}
         enlarged={enlarged}
         onToggleSize={() => setEnlarged((prev) => !prev)}
+        paperReviewTab={paperReviewTab}
+        onPaperReviewTabChange={setPaperReviewTab}
+        paperReviewPublications={paperReviewPublications}
         paperReviewTags={paperReviewTags}
-        activeTag={activeTag}
-        onTagChange={setActiveTag}
+        activeFilter={activeFilter}
+        onFilterChange={setActiveFilter}
       />
 
       <main className="flex-1 mx-auto w-full max-w-7xl px-6 pt-24 pb-20">

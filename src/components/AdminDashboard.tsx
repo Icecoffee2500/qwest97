@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { Item } from "@/data/items";
+import { publications } from "@/data/items";
 import {
   createItemAction,
   updateItemAction,
@@ -216,6 +217,9 @@ function ItemForm({
   const [links, setLinks] = useState<{ label: string; url: string }[]>(
     item?.links || []
   );
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    item?.category || "research"
+  );
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -255,7 +259,8 @@ function ItemForm({
         <label className={labelClass}>Category *</label>
         <select
           name="category"
-          defaultValue={item?.category || "research"}
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
           className={inputClass}
           required
         >
@@ -265,6 +270,24 @@ function ItemForm({
           <option value="about">About</option>
         </select>
       </div>
+
+      {selectedCategory === "paper_review" && (
+        <div>
+          <label className={labelClass}>Publication</label>
+          <select
+            name="publication"
+            defaultValue={item?.publication || ""}
+            className={inputClass}
+          >
+            <option value="">선택하세요</option>
+            {publications.map((pub) => (
+              <option key={pub} value={pub}>
+                {pub}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div>
         <label className={labelClass}>Title *</label>
