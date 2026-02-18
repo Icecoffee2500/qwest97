@@ -94,6 +94,7 @@ export default function Portfolio({ items }: PortfolioProps) {
                 key={item.id}
                 item={item}
                 enlarged={enlarged}
+                showCategoryBorder={activeCategory === "all"}
                 onClick={() => setSelectedItem(item)}
               />
             ))}

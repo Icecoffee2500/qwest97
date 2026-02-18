@@ -28,6 +28,7 @@ function getDomainColor(domain: string): string {
 interface CardProps {
   item: Item;
   enlarged: boolean;
+  showCategoryBorder?: boolean;
   onClick: () => void;
 }
 
@@ -39,7 +40,7 @@ function formatPeriod(start?: string | null, end?: string | null): string {
   return `— ${fmt(end!)}`;
 }
 
-export default function Card({ item, enlarged, onClick }: CardProps) {
+export default function Card({ item, enlarged, showCategoryBorder = true, onClick }: CardProps) {
   const isPaperReview = item.category === "paper_review";
   const isProject = item.category === "project";
   const domain = item.domain || null;
@@ -47,6 +48,16 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
   const isResearch = item.category === "research";
 
   const sizeClass = enlarged ? "p-5 sm:p-6" : "p-4 sm:p-5";
+
+  const borderStyle = showCategoryBorder
+    ? isResearch
+      ? { color: "rgba(0, 122, 255, 0.25)", hover: "rgba(0, 122, 255, 0.7)" }
+      : isPaperReview
+      ? { color: "rgba(255, 149, 0, 0.25)", hover: "rgba(255, 149, 0, 0.7)" }
+      : isProject
+      ? { color: "rgba(175, 82, 222, 0.25)", hover: "rgba(175, 82, 222, 0.7)" }
+      : null
+    : null;
 
   return (
     <motion.div
@@ -64,8 +75,17 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
     >
       <motion.div
         layoutId={`card-${item.id}`}
-        className={`flex flex-col justify-between rounded-xl border border-neutral-200 bg-white transition-colors duration-200 group-hover:border-neutral-400 ${sizeClass}`}
-        transition={{ type: "spring", stiffness: 200, damping: 28 }}
+        className={`flex flex-col justify-between rounded-xl border bg-white transition-colors duration-200 ${
+          borderStyle ? "" : "border-neutral-200 group-hover:border-neutral-400"
+        } ${sizeClass}`}
+        style={borderStyle ? { borderColor: borderStyle.color } : undefined}
+        whileHover={borderStyle ? { borderColor: borderStyle.hover } : undefined}
+        transition={{
+          type: "spring",
+          stiffness: 200,
+          damping: 28,
+          borderColor: { duration: 0.05, ease: "easeOut" },
+        }}
       >
         {isPaperReview ? (
           <div className="flex flex-col min-h-[100px]">
@@ -75,15 +95,14 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
               >
-                <span className="text-neutral-400 tracking-[0.15em] uppercase font-medium">
+                <span className="tracking-[0.15em] uppercase font-medium" style={{ color: "#FF9500" }}>
                   Paper Review
                 </span>
                 {domain && (
                   <>
                     <span className="text-neutral-300">|</span>
                     <span
-                      className="tracking-[0.1em] uppercase font-medium truncate"
-                      style={{ color: getDomainColor(domain) }}
+                      className="tracking-[0.1em] uppercase font-medium truncate text-neutral-900"
                     >
                       {domain}
                     </span>
@@ -140,7 +159,7 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
               >
-                <span className="text-neutral-400 tracking-[0.15em] uppercase font-medium">
+                <span className="tracking-[0.15em] uppercase font-medium" style={{ color: "#5856D6" }}>
                   Project
                 </span>
                 {item.collaborator && (
@@ -187,9 +206,10 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
           <div className="flex flex-col min-h-[100px]">
             <div className="flex items-center justify-between">
               <span
-                className={`text-neutral-400 tracking-[0.15em] uppercase font-medium ${
+                className={`tracking-[0.15em] uppercase font-medium ${
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
+                style={{ color: "#32ADE6" }}
               >
                 Research
               </span>
