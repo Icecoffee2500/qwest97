@@ -86,7 +86,21 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
               </p>
             )}
 
-            {/* Links — directly under title */}
+            {/* Tags — top for paper_review */}
+            {item.category === "paper_review" && item.tags && item.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-4 sm:mt-5">
+                {item.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[9px] sm:text-[10px] tracking-wider px-2.5 sm:px-3 py-1 sm:py-1.5 bg-neutral-50 text-neutral-500 uppercase"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Links — under tags (paper_review) or title (others) */}
             {item.links && item.links.length > 0 && (
               <div className="flex flex-wrap gap-3 sm:gap-4 mt-4 sm:mt-5">
                 {item.links.map((link) => (
@@ -122,8 +136,8 @@ export default function CardDetail({ item, onClose }: CardDetailProps) {
             <MarkdownRenderer content={item.description} />
           </motion.div>
 
-          {/* Tags */}
-          {item.tags && item.tags.length > 0 && (
+          {/* Tags — bottom for non-paper_review */}
+          {item.category !== "paper_review" && item.tags && item.tags.length > 0 && (
             <motion.div
               className="flex flex-wrap gap-2 mt-12"
               initial={{ opacity: 0 }}
