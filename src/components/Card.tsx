@@ -78,29 +78,32 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
         {isPaperReview ? (
           <>
             <div className="flex items-center justify-between mb-4">
-              <span
-                className={`text-neutral-400 tracking-[0.15em] uppercase font-medium ${
+              <div
+                className={`flex items-center gap-1.5 ${
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
               >
-                {item.publication || "—"}
-              </span>
-              {domain && (
-                <span
-                  className={`tracking-[0.1em] uppercase font-medium truncate mx-3 ${
-                    enlarged ? "text-[11px]" : "text-[9px]"
-                  }`}
-                  style={{ color: getDomainColor(domain) }}
-                >
-                  {domain}
+                <span className="text-neutral-400 tracking-[0.15em] uppercase font-medium">
+                  Paper Review
                 </span>
-              )}
+                {domain && (
+                  <>
+                    <span className="text-neutral-300">|</span>
+                    <span
+                      className="tracking-[0.1em] uppercase font-medium truncate"
+                      style={{ color: getDomainColor(domain) }}
+                    >
+                      {domain}
+                    </span>
+                  </>
+                )}
+              </div>
               <span
-                className={`text-neutral-400 tracking-[0.2em] font-medium ${
+                className={`text-neutral-400 tracking-[0.15em] uppercase font-medium flex-shrink-0 ${
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
               >
-                {item.year || "—"}
+                {[item.publication, item.year].filter(Boolean).join(" ")}
               </span>
             </div>
             <div>
@@ -123,34 +126,48 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
             </div>
           </>
         ) : isProject ? (
-          <>
-            <div className="flex items-center justify-between mb-3">
-              <span
-                className={`text-neutral-400 tracking-[0.15em] uppercase font-medium ${
+          <div className="flex gap-4">
+            <div className="flex flex-col flex-1 min-w-0">
+              <div
+                className={`flex items-center gap-1.5 ${
                   enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
               >
-                {item.collaborator || "—"}
-              </span>
-              <span
-                className={`text-neutral-400 tracking-[0.15em] uppercase font-medium ${
-                  enlarged ? "text-[11px]" : "text-[9px]"
-                }`}
-              >
-                Project
-              </span>
-              <span
-                className={`text-neutral-400 tracking-[0.1em] font-medium ${
-                  enlarged ? "text-[11px]" : "text-[9px]"
+                <span className="text-neutral-400 tracking-[0.15em] uppercase font-medium">
+                  Project
+                </span>
+                {item.collaborator && (
+                  <>
+                    <span className="text-neutral-300">|</span>
+                    <span className="text-neutral-900 tracking-[0.1em] uppercase font-semibold truncate">
+                      {item.collaborator}
+                    </span>
+                  </>
+                )}
+              </div>
+
+              <div className="flex-1 flex items-center">
+                <h3
+                  className={`font-medium text-neutral-900 leading-snug ${
+                    enlarged ? "text-base sm:text-lg" : "text-sm"
+                  }`}
+                >
+                  {item.title}
+                </h3>
+              </div>
+
+              <p
+                className={`font-medium text-neutral-400 tracking-wide ${
+                  enlarged ? "text-xs" : "text-[11px]"
                 }`}
               >
                 {formatPeriod(item.period_start, item.period_end)}
-              </span>
+              </p>
             </div>
 
             {item.thumbnail && (
               <div
-                className={`flex items-center justify-center my-3 ${
+                className={`flex-shrink-0 flex items-center justify-center w-[45%] ${
                   enlarged ? "h-20" : "h-14"
                 }`}
               >
@@ -158,30 +175,11 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
                 <img
                   src={item.thumbnail}
                   alt={item.collaborator || item.title}
-                  className="max-h-full max-w-[60%] object-contain"
+                  className="max-h-full max-w-full object-contain"
                 />
               </div>
             )}
-
-            <div>
-              <h3
-                className={`font-medium text-neutral-900 leading-snug ${
-                  enlarged ? "text-base sm:text-lg" : "text-sm"
-                }`}
-              >
-                {item.title}
-              </h3>
-              {item.subtitle && (
-                <p
-                  className={`mt-1.5 text-neutral-400 font-light tracking-wide ${
-                    enlarged ? "text-xs" : "text-[11px]"
-                  }`}
-                >
-                  {item.subtitle}
-                </p>
-              )}
-            </div>
-          </>
+          </div>
         ) : (
           <>
             <div className="flex justify-between items-start">

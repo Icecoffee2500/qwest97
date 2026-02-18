@@ -392,26 +392,30 @@ function ItemForm({
         />
       </div>
 
-      <div>
-        <label className={labelClass}>Subtitle</label>
-        <input
-          name="subtitle"
-          defaultValue={item?.subtitle || ""}
-          className={inputClass}
-          placeholder="학회명, 프로젝트 유형 등"
-        />
-      </div>
+      {selectedCategory !== "project" && (
+        <div>
+          <label className={labelClass}>Subtitle</label>
+          <input
+            name="subtitle"
+            defaultValue={item?.subtitle || ""}
+            className={inputClass}
+            placeholder="학회명, 프로젝트 유형 등"
+          />
+        </div>
+      )}
 
-      <div>
-        <label className={labelClass}>Year</label>
-        <input
-          name="year"
-          type="number"
-          defaultValue={item?.year || ""}
-          className={inputClass}
-          placeholder="2025"
-        />
-      </div>
+      {selectedCategory !== "project" && (
+        <div>
+          <label className={labelClass}>Year</label>
+          <input
+            name="year"
+            type="number"
+            defaultValue={item?.year || ""}
+            className={inputClass}
+            placeholder="2025"
+          />
+        </div>
+      )}
 
       <div>
         <label className={labelClass}>Description *</label>
