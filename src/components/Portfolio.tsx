@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Category, Item } from "@/data/items";
 import Navigation from "@/components/Navigation";
@@ -16,22 +16,44 @@ export default function Portfolio({ items }: PortfolioProps) {
   const [activeCategory, setActiveCategory] = useState<Category>("all");
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [enlarged, setEnlarged] = useState(false);
+  const [activeTag, setActiveTag] = useState<string | null>(null);
 
-  const filteredItems =
-    activeCategory === "all"
-      ? items
-      : items.filter((item) => item.category === activeCategory);
+  const paperReviewTags = useMemo(() => {
+    const tagSet = new Set<string>();
+    items
+      .filter((item) => item.category === "paper_review")
+      .forEach((item) => {
+        item.tags?.forEach((tag) => tagSet.add(tag));
+      });
+    return Array.from(tagSet).sort();
+  }, [items]);
+
+  const filteredItems = useMemo(() => {
+    if (activeCategory === "paper_review") {
+      const prItems = items.filter((i) => i.category === "paper_review");
+      if (!activeTag) return prItems;
+      return prItems.filter((i) => i.tags?.includes(activeTag));
+    }
+    if (activeCategory === "all") return items;
+    return items.filter((i) => i.category === activeCategory);
+  }, [items, activeCategory, activeTag]);
+
+  function handleCategoryChange(cat: Category) {
+    setActiveCategory(cat);
+    setSelectedItem(null);
+    if (cat !== "paper_review") setActiveTag(null);
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation
         activeCategory={activeCategory}
-        onCategoryChange={(cat) => {
-          setActiveCategory(cat);
-          setSelectedItem(null);
-        }}
+        onCategoryChange={handleCategoryChange}
         enlarged={enlarged}
         onToggleSize={() => setEnlarged((prev) => !prev)}
+        paperReviewTags={paperReviewTags}
+        activeTag={activeTag}
+        onTagChange={setActiveTag}
       />
 
       <main className="flex-1 mx-auto w-full max-w-7xl px-6 pt-24 pb-20">

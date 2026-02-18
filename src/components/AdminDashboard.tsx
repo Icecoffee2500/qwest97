@@ -260,6 +260,7 @@ function ItemForm({
           required
         >
           <option value="research">Research</option>
+          <option value="paper_review">Paper Review</option>
           <option value="project">Project</option>
           <option value="about">About</option>
         </select>

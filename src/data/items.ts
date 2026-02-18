@@ -1,4 +1,4 @@
-export type Category = "all" | "research" | "project" | "about";
+export type Category = "all" | "research" | "paper_review" | "project" | "about";
 
 export interface Item {
   id: string;
@@ -14,6 +14,7 @@ export interface Item {
 export const categories: { key: Category; label: string }[] = [
   { key: "all", label: "ALL" },
   { key: "research", label: "RESEARCH" },
+  { key: "paper_review", label: "PAPER REVIEW" },
   { key: "project", label: "PROJECTS" },
   { key: "about", label: "ABOUT" },
 ];
