@@ -44,17 +44,9 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
   const isProject = item.category === "project";
   const domain = item.domain || null;
 
-  const sizeClass = isPaperReview
-    ? enlarged
-      ? "p-5 sm:p-6"
-      : "p-4 sm:p-5"
-    : isProject
-      ? enlarged
-        ? "p-5 sm:p-6"
-        : "p-4 sm:p-5"
-      : enlarged
-        ? "aspect-[3/2] p-6 sm:p-8"
-        : "aspect-[4/3] p-5 sm:p-6";
+  const isResearch = item.category === "research";
+
+  const sizeClass = enlarged ? "p-5 sm:p-6" : "p-4 sm:p-5";
 
   return (
     <motion.div
@@ -191,13 +183,52 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
               </div>
             )}
           </div>
+        ) : isResearch ? (
+          <div className="flex flex-col min-h-[100px]">
+            <div className="flex items-center justify-between">
+              <span
+                className={`text-neutral-400 tracking-[0.15em] uppercase font-medium ${
+                  enlarged ? "text-[11px]" : "text-[9px]"
+                }`}
+              >
+                Research
+              </span>
+              <span
+                className={`text-neutral-400 tracking-[0.15em] uppercase font-medium flex-shrink-0 ${
+                  enlarged ? "text-[11px]" : "text-[9px]"
+                }`}
+              >
+                {[item.publication, item.year].filter(Boolean).join(" ")}
+              </span>
+            </div>
+
+            <div className="flex-1 flex items-center">
+              <h3
+                className={`font-medium text-neutral-900 leading-snug break-keep ${
+                  enlarged ? "text-lg sm:text-xl" : "text-base"
+                }`}
+              >
+                {item.title}
+              </h3>
+            </div>
+
+            {item.tags && item.tags.length > 0 && (
+              <p
+                className={`text-neutral-400 tracking-[0.1em] font-medium ${
+                  enlarged ? "text-[11px]" : "text-[9px]"
+                }`}
+              >
+                {item.tags.join(" · ")}
+              </p>
+            )}
+          </div>
         ) : (
-          <>
+          <div className="flex flex-col min-h-[100px]">
             <div className="flex justify-between items-start">
               {item.year ? (
                 <span
-                  className={`text-neutral-300 tracking-[0.2em] font-light ${
-                    enlarged ? "text-xs" : "text-[10px]"
+                  className={`text-neutral-400 tracking-[0.2em] font-medium ${
+                    enlarged ? "text-[11px]" : "text-[9px]"
                   }`}
                 >
                   {item.year}
@@ -206,32 +237,34 @@ export default function Card({ item, enlarged, onClick }: CardProps) {
                 <span />
               )}
               <span
-                className={`text-neutral-300 tracking-[0.15em] uppercase font-light ${
-                  enlarged ? "text-xs" : "text-[10px]"
+                className={`text-neutral-400 tracking-[0.15em] uppercase font-medium ${
+                  enlarged ? "text-[11px]" : "text-[9px]"
                 }`}
               >
                 {item.category}
               </span>
             </div>
-            <div>
-              <h3
-                className={`font-medium text-neutral-900 leading-snug break-keep ${
-                  enlarged ? "text-xl sm:text-2xl" : "text-base sm:text-lg"
-                }`}
-              >
-                {item.title}
-              </h3>
-              {item.subtitle && (
-                <p
-                  className={`mt-1 text-neutral-400 font-light tracking-wide ${
-                    enlarged ? "text-xs sm:text-sm" : "text-[11px]"
+            <div className="flex-1 flex items-center">
+              <div>
+                <h3
+                  className={`font-medium text-neutral-900 leading-snug break-keep ${
+                    enlarged ? "text-lg sm:text-xl" : "text-base"
                   }`}
                 >
-                  {item.subtitle}
-                </p>
-              )}
+                  {item.title}
+                </h3>
+                {item.subtitle && (
+                  <p
+                    className={`mt-1 text-neutral-400 font-light tracking-wide ${
+                      enlarged ? "text-xs" : "text-[11px]"
+                    }`}
+                  >
+                    {item.subtitle}
+                  </p>
+                )}
+              </div>
             </div>
-          </>
+          </div>
         )}
       </motion.div>
     </motion.div>

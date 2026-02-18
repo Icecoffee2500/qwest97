@@ -290,33 +290,47 @@ function ItemForm({
         </select>
       </div>
 
+      {(selectedCategory === "paper_review" || selectedCategory === "research") && (
+        <div>
+          <label className={labelClass}>Publication</label>
+          <select
+            name="publication"
+            defaultValue={item?.publication || ""}
+            className={inputClass}
+          >
+            <option value="">선택하세요</option>
+            {publications.map((pub) => (
+              <option key={pub} value={pub}>
+                {pub}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {selectedCategory === "research" && (
+        <div>
+          <label className={labelClass}>Published Year</label>
+          <input
+            name="year"
+            type="number"
+            defaultValue={item?.year || ""}
+            className={inputClass}
+            placeholder="2025"
+          />
+        </div>
+      )}
+
       {selectedCategory === "paper_review" && (
-        <>
-          <div>
-            <label className={labelClass}>Publication</label>
-            <select
-              name="publication"
-              defaultValue={item?.publication || ""}
-              className={inputClass}
-            >
-              <option value="">선택하세요</option>
-              {publications.map((pub) => (
-                <option key={pub} value={pub}>
-                  {pub}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className={labelClass}>Domain</label>
-            <input
-              name="domain"
-              defaultValue={item?.domain || ""}
-              className={inputClass}
-              placeholder="예: Scene Graph Generation, Object Detection 등"
-            />
-          </div>
-        </>
+        <div>
+          <label className={labelClass}>Domain</label>
+          <input
+            name="domain"
+            defaultValue={item?.domain || ""}
+            className={inputClass}
+            placeholder="예: Scene Graph Generation, Object Detection 등"
+          />
+        </div>
       )}
 
       {selectedCategory === "project" && (
@@ -403,7 +417,7 @@ function ItemForm({
         />
       </div>
 
-      {selectedCategory !== "project" && (
+      {selectedCategory !== "project" && selectedCategory !== "research" && (
         <div>
           <label className={labelClass}>Subtitle</label>
           <input
@@ -415,7 +429,7 @@ function ItemForm({
         </div>
       )}
 
-      {selectedCategory !== "project" && (
+      {selectedCategory !== "project" && selectedCategory !== "research" && (
         <div>
           <label className={labelClass}>Year</label>
           <input
